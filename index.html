@@ -150,7 +150,13 @@ tailwind.config={
 <p id="uploadText" class="text-xs text-gray-500">Tap untuk upload foto</p>
 <img id="imagePreview" class="absolute inset-0 w-full h-full object-cover hidden" alt="Preview">
 </div></div>
-<div class="flex items-center gap-2"><input type="checkbox" class="accent-primary"><label class="text-xs text-gray-400">Laporkan secara anonim</label></div>
+<div class="bg-primary/10 border border-primary/20 rounded-xl p-3 flex items-start gap-3">
+  <svg class="w-5 h-5 text-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+  <div>
+    <p class="text-sm font-semibold text-primary mb-0.5">Laporan 100% Anonim</p>
+    <p class="text-xs text-gray-400">Demi keamanan Anda, identitas dan jejak digital pelapor secara otomatis disamarkan. Tidak ada data pribadi yang dikirim bersama laporan ini.</p>
+  </div>
+</div>
 <button onclick="alert('Terima kasih! Laporan Anda berhasil dikirim dan akan segera diinvestigasi oleh tim Wicara.')" class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-pink-600 transition">Kirim Laporan</button>
 </div>
 </div>
