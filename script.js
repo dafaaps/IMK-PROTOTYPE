@@ -196,3 +196,79 @@ function toggleSwitch(element) {
     knob.classList.add('right-1');
   }
 }
+
+// --- SOS CALL LOGIC ---
+let volumePressCount = 0;
+let volumePressTimer;
+let sosCallTimer;
+let sosConnectedTimer;
+
+// Detect volume keys or 'v' key for testing
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'AudioVolumeUp' || e.key === 'AudioVolumeDown' || e.key.toLowerCase() === 'v') {
+    volumePressCount++;
+    
+    clearTimeout(volumePressTimer);
+    
+    if (volumePressCount >= 3) {
+      triggerSOSCall();
+      volumePressCount = 0;
+    } else {
+      volumePressTimer = setTimeout(() => {
+        volumePressCount = 0;
+      }, 2000); // 2 seconds window
+    }
+  }
+});
+
+function triggerSOSCall() {
+  showScreen('sos-call');
+  const bottomNav = document.getElementById('bottom-nav');
+  if(bottomNav) bottomNav.style.display = 'none'; // hide bottom nav
+  
+  const statusEl = document.getElementById('sos-call-status');
+  statusEl.textContent = 'Memanggil...';
+  statusEl.classList.add('animate-pulse');
+  
+  // Reset overlay
+  const overlay = document.getElementById('dark-overlay');
+  overlay.style.display = 'none';
+  overlay.classList.replace('opacity-100', 'opacity-0');
+  
+  // Simulate ringing for 3 seconds, then connect
+  sosCallTimer = setTimeout(() => {
+    statusEl.classList.remove('animate-pulse');
+    let seconds = 0;
+    statusEl.textContent = 'Tersambung 00:00';
+    
+    // Start connected timer
+    sosConnectedTimer = setInterval(() => {
+      seconds++;
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      statusEl.textContent = `Tersambung ${m}:${s}`;
+      
+      // After 2 seconds, dim screen
+      if (seconds === 2) {
+        overlay.style.display = 'block';
+        setTimeout(() => overlay.classList.replace('opacity-0', 'opacity-100'), 50);
+      }
+    }, 1000);
+    
+  }, 3000);
+}
+
+function endSOSCall() {
+  clearTimeout(sosCallTimer);
+  clearInterval(sosConnectedTimer);
+  
+  // Remove dark overlay
+  const overlay = document.getElementById('dark-overlay');
+  overlay.classList.replace('opacity-100', 'opacity-0');
+  setTimeout(() => { overlay.style.display = 'none'; }, 500); // wait for fade transition
+  
+  // Go back to previous screen
+  const bottomNav = document.getElementById('bottom-nav');
+  if(bottomNav) bottomNav.style.display = 'block';
+  showScreen('home'); // or profile/rights depending on where they were, defaulting to home is safer for prototype
+}
