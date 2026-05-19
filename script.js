@@ -272,3 +272,26 @@ function endSOSCall() {
   if(bottomNav) bottomNav.style.display = 'block';
   showScreen('home'); // or profile/rights depending on where they were, defaulting to home is safer for prototype
 }
+
+let blackoutClickCount = 0;
+let blackoutClickTimer;
+
+function handleBlackoutClick() {
+  blackoutClickCount++;
+  clearTimeout(blackoutClickTimer);
+  
+  if (blackoutClickCount >= 4) {
+    // Exit blackout mode
+    const overlay = document.getElementById('dark-overlay');
+    overlay.classList.replace('opacity-100', 'opacity-0');
+    setTimeout(() => { 
+      overlay.style.display = 'none'; 
+    }, 500);
+    blackoutClickCount = 0;
+  } else {
+    blackoutClickTimer = setTimeout(() => {
+      blackoutClickCount = 0;
+    }, 1500); // Must click 4 times within 1.5 seconds
+  }
+}
+

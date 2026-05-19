@@ -267,7 +267,7 @@ tailwind.config={theme:{extend:{colors:{primary:'#E91E63',dark:'#121212',card:'#
 </div>
 
 <!-- Dark Overlay (Simulate Brightness 0) -->
-<div id="dark-overlay" class="fixed inset-0 bg-black z-[99999] pointer-events-none transition-opacity duration-500 opacity-0" style="display: none;"></div>
+<div id="dark-overlay" class="fixed inset-0 bg-black z-[999999] pointer-events-auto transition-opacity duration-500 opacity-0" style="display: none;" onclick="handleBlackoutClick()"></div>
 
 <!-- Screen: SOS Call -->
 <div id="sos-call" class="screen bg-gradient-to-b from-gray-900 to-black h-screen relative z-[9999]">
