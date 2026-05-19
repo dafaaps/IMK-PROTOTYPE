@@ -1,4 +1,23 @@
 let gmap,userMarker,userLat=null,userLng=null,gpsAsked=false;
+let activeMarkers = [];
+
+const reportsData = [
+  { lat: 3.5952, lng: 98.6722, title: 'Korupsi APBD', color: '#EAB308', island: 'Sumatera', locationName: 'Medan', count: 852, urgency: 'Tinggi' },
+  { lat: -0.9471, lng: 100.3688, title: 'Pungli Izin Usaha', color: '#EAB308', island: 'Sumatera', locationName: 'Padang', count: 320, urgency: 'Sedang' },
+  { lat: -2.9909, lng: 104.7566, title: 'Jalan Rusak Parah', color: '#22C55E', island: 'Sumatera', locationName: 'Palembang', count: 150, urgency: 'Selesai' },
+  { lat: -6.2000, lng: 106.8166, title: 'Pungli Pelayanan Publik', color: '#EF4444', island: 'Jawa', locationName: 'DKI Jakarta', count: 1247, urgency: 'Tinggi' },
+  { lat: -6.9147, lng: 107.6098, title: 'Penyalahgunaan Wewenang', color: '#EAB308', island: 'Jawa', locationName: 'Jawa Barat', count: 893, urgency: 'Sedang' },
+  { lat: -7.2504, lng: 112.7688, title: 'Bantuan Sosial Fiktif', color: '#EF4444', island: 'Jawa', locationName: 'Jawa Timur', count: 621, urgency: 'Tinggi' },
+  { lat: -0.0263, lng: 109.3425, title: 'Ilegal Logging', color: '#EF4444', island: 'Kalimantan', locationName: 'Pontianak', count: 410, urgency: 'Tinggi' },
+  { lat: -3.3167, lng: 114.5901, title: 'Tambang Ilegal', color: '#EAB308', island: 'Kalimantan', locationName: 'Banjarmasin', count: 280, urgency: 'Sedang' },
+  { lat: -1.2653, lng: 116.8312, title: 'Pungli Pelabuhan', color: '#EAB308', island: 'Kalimantan', locationName: 'Balikpapan', count: 190, urgency: 'Sedang' },
+  { lat: -5.1477, lng: 119.4327, title: 'Korupsi Dana Desa', color: '#EF4444', island: 'Sulawesi', locationName: 'Makassar', count: 520, urgency: 'Tinggi' },
+  { lat: 1.4822, lng: 124.8489, title: 'Infrastruktur Mangkrak', color: '#EAB308', island: 'Sulawesi', locationName: 'Manado', count: 215, urgency: 'Sedang' },
+  { lat: -8.6705, lng: 115.2128, title: 'Pungli Pariwisata', color: '#EAB308', island: 'Bali & Nusa Tenggara', locationName: 'Bali', count: 340, urgency: 'Sedang' },
+  { lat: -10.1589, lng: 123.5786, title: 'Kekurangan Air Bersih', color: '#EF4444', island: 'Bali & Nusa Tenggara', locationName: 'Kupang', count: 110, urgency: 'Tinggi' },
+  { lat: -3.6949, lng: 128.1814, title: 'Fasilitas Kesehatan Minim', color: '#EAB308', island: 'Maluku & Papua', locationName: 'Ambon', count: 180, urgency: 'Sedang' },
+  { lat: -2.5337, lng: 140.7181, title: 'Korupsi Dana Otsus', color: '#EF4444', island: 'Maluku & Papua', locationName: 'Jayapura', count: 450, urgency: 'Tinggi' }
+];
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -28,18 +47,82 @@ function initMap(){
       {featureType:'poi',elementType:'labels',stylers:[{visibility:'off'}]}
     ]
   });
-  const reports=[
-    {lat:-6.2,lng:106.85,title:'Korupsi Dana Desa',color:'#EF4444'},
-    {lat:-6.9,lng:107.6,title:'Pungli Pelayanan',color:'#EAB308'},
-    {lat:-7.25,lng:112.75,title:'Penyalahgunaan Wewenang',color:'#22C55E'},
-    {lat:-8.65,lng:115.2,title:'Pelanggaran HAM',color:'#EF4444'},
-    {lat:3.6,lng:98.68,title:'Korupsi APBD',color:'#EAB308'}
-  ];
-  reports.forEach(r=>{
-    new google.maps.Marker({position:{lat:r.lat,lng:r.lng},map:gmap,title:r.title,
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:8,fillColor:r.color,fillOpacity:.9,strokeColor:'#fff',strokeWeight:2}
+  
+  // Draw initial markers (All)
+  drawMarkers('Semua');
+}
+
+function drawMarkers(filterIsland = 'Semua') {
+  // Clear existing
+  activeMarkers.forEach(m => m.setMap(null));
+  activeMarkers = [];
+
+  const filtered = filterIsland === 'Semua' ? reportsData : reportsData.filter(r => r.island === filterIsland);
+  
+  filtered.forEach(r => {
+    const m = new google.maps.Marker({
+      position: {lat: r.lat, lng: r.lng},
+      map: gmap,
+      title: r.title,
+      icon: {path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: r.color, fillOpacity: .9, strokeColor: '#fff', strokeWeight: 2}
     });
+    activeMarkers.push(m);
   });
+
+  renderHotspots(filtered);
+}
+
+function renderHotspots(data) {
+  const list = document.getElementById('hotspot-list');
+  if(!list) return;
+  list.innerHTML = '';
+  
+  // Sort by count descending
+  const sorted = [...data].sort((a, b) => b.count - a.count).slice(0, 5); // top 5
+  
+  if (sorted.length === 0) {
+    list.innerHTML = '<p class="text-sm text-gray-500">Tidak ada data hotspot di wilayah ini.</p>';
+    return;
+  }
+
+  sorted.forEach(r => {
+    let bg = r.urgency === 'Tinggi' ? 'bg-red-500/20 text-red-400' : (r.urgency === 'Sedang' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400');
+    list.innerHTML += `
+      <div class="bg-card rounded-xl p-4 flex justify-between items-center fade-in">
+        <div><p class="text-sm font-semibold">${r.locationName}</p><p class="text-xs text-gray-400">${r.count.toLocaleString()} laporan aktif</p></div>
+        <span class="${bg} text-xs px-2 py-1 rounded-full">${r.urgency}</span>
+      </div>
+    `;
+  });
+}
+
+function filterByIsland(island, element) {
+  // update buttons UI
+  const container = element.parentElement;
+  const buttons = container.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => {
+    btn.className = 'filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800';
+  });
+  element.className = 'filter-btn cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium transition';
+  
+  // redraw markers and list
+  drawMarkers(island);
+  
+  // adjust map bounds or center based on island
+  const centers = {
+    'Semua': { lat: -2.5, lng: 118, zoom: 5 },
+    'Sumatera': { lat: 0, lng: 102, zoom: 5 },
+    'Jawa': { lat: -7.5, lng: 110, zoom: 6 },
+    'Kalimantan': { lat: -1, lng: 114, zoom: 5 },
+    'Sulawesi': { lat: -2, lng: 120, zoom: 5 },
+    'Bali & Nusa Tenggara': { lat: -8.5, lng: 120, zoom: 6 },
+    'Maluku & Papua': { lat: -3, lng: 135, zoom: 5 }
+  };
+  
+  if (centers[island] && gmap) {
+    gmap.panTo({lat: centers[island].lat, lng: centers[island].lng});
+    gmap.setZoom(centers[island].zoom);
+  }
 }
 
 function requestGPS(){
@@ -112,13 +195,4 @@ function toggleSwitch(element) {
     knob.classList.remove('left-1');
     knob.classList.add('right-1');
   }
-}
-
-function selectFilter(element) {
-  const container = element.parentElement;
-  const buttons = container.querySelectorAll('.filter-btn');
-  buttons.forEach(btn => {
-    btn.className = 'filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800';
-  });
-  element.className = 'filter-btn cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium transition';
 }
