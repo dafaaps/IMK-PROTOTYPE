@@ -197,6 +197,27 @@ function toggleSwitch(element) {
   }
 }
 
+function toggleTheme(element) {
+  const knob = element.querySelector('.toggle-knob');
+  if (element.classList.contains('bg-primary')) {
+    element.classList.remove('bg-primary');
+    element.classList.add('bg-gray-600');
+    knob.classList.remove('right-1');
+    knob.classList.add('left-1');
+    
+    // Switch to Light Mode (Mode Terang)
+    document.body.classList.add('light-mode');
+  } else {
+    element.classList.remove('bg-gray-600');
+    element.classList.add('bg-primary');
+    knob.classList.remove('left-1');
+    knob.classList.add('right-1');
+    
+    // Switch to Dark Mode (Mode Gelap)
+    document.body.classList.remove('light-mode');
+  }
+}
+
 // --- SOS CALL LOGIC ---
 let volumePressCount = 0;
 let volumePressTimer;

@@ -7,7 +7,35 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>
-tailwind.config={theme:{extend:{colors:{primary:'#E91E63',dark:'#121212',card:'#1E1E1E',surface:'#2A2A2A'}}}}
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        primary: 'var(--color-primary)',
+        dark: 'var(--color-dark)',
+        card: 'var(--color-card)',
+        surface: 'var(--color-surface)',
+        white: 'var(--color-text)',
+        'gray-300': 'var(--color-gray-300)',
+        'gray-400': 'var(--color-gray-400)',
+        'gray-500': 'var(--color-gray-500)',
+        'gray-600': 'var(--color-gray-600)',
+        'gray-700': 'var(--color-gray-700)',
+        'gray-800': 'var(--color-gray-800)',
+        'red-400': 'var(--color-red-400)',
+        'red-500': 'var(--color-red-500)',
+        'red-600': 'var(--color-red-600)',
+        'blue-400': 'var(--color-blue-400)',
+        'green-400': 'var(--color-green-400)',
+        'green-500': 'var(--color-green-500)',
+        'yellow-400': 'var(--color-yellow-400)',
+        'yellow-500': 'var(--color-yellow-500)',
+        'pink-600': 'var(--color-pink-600)',
+        'pink-700': 'var(--color-pink-700)'
+      }
+    }
+  }
+}
 </script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -163,7 +191,7 @@ tailwind.config={theme:{extend:{colors:{primary:'#E91E63',dark:'#121212',card:'#
 <h3 class="font-semibold mb-3">Pengaturan</h3>
 <div class="space-y-2">
 <div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🔔</span><span class="text-sm">Notifikasi</span></div><div onclick="toggleSwitch(this)" class="w-10 h-6 bg-primary rounded-full relative cursor-pointer transition-colors duration-300"><div class="toggle-knob w-4 h-4 bg-white rounded-full absolute top-1 right-1 transition-all duration-300"></div></div></div>
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div onclick="toggleSwitch(this)" class="w-10 h-6 bg-primary rounded-full relative cursor-pointer transition-colors duration-300"><div class="toggle-knob w-4 h-4 bg-white rounded-full absolute top-1 right-1 transition-all duration-300"></div></div></div>
+<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div onclick="toggleTheme(this)" class="w-10 h-6 bg-primary rounded-full relative cursor-pointer transition-colors duration-300"><div class="toggle-knob w-4 h-4 bg-white rounded-full absolute top-1 right-1 transition-all duration-300"></div></div></div>
 <div onclick="showScreen('privacy')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🔒</span><span class="text-sm">Privasi & Keamanan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
 <div onclick="showScreen('help')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>❓</span><span class="text-sm">Bantuan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
 <div onclick="showScreen('about')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>ℹ️</span><span class="text-sm">Tentang Wicara</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
