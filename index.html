@@ -99,12 +99,12 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
  Lokasi Saya
 </button>
 <h3 class="font-semibold mb-3">Filter Wilayah</h3>
-<div class="flex gap-2 flex-wrap mb-4">
-<span onclick="alert('Menampilkan semua laporan')" class="cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium hover:bg-primary/30 transition">Semua</span>
-<span onclick="alert('Menampilkan laporan wilayah Jawa')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Jawa</span>
-<span onclick="alert('Menampilkan laporan wilayah Sumatera')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Sumatera</span>
-<span onclick="alert('Menampilkan laporan wilayah Kalimantan')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Kalimantan</span>
-<span onclick="alert('Menampilkan laporan wilayah Sulawesi')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Sulawesi</span>
+<div class="flex gap-2 flex-wrap mb-4 filter-container">
+<span onclick="selectFilter(this)" class="filter-btn cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium transition">Semua</span>
+<span onclick="selectFilter(this)" class="filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800">Jawa</span>
+<span onclick="selectFilter(this)" class="filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800">Sumatera</span>
+<span onclick="selectFilter(this)" class="filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800">Kalimantan</span>
+<span onclick="selectFilter(this)" class="filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800">Sulawesi</span>
 </div>
 <h3 class="font-semibold mb-3">Hotspot Area</h3>
 <div class="space-y-3">
@@ -175,8 +175,8 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 </div>
 <h3 class="font-semibold mb-3">Pengaturan</h3>
 <div class="space-y-2">
-<div onclick="alert('Pengaturan Notifikasi disimpan!')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🔔</span><span class="text-sm">Notifikasi</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
-<div onclick="alert('Mode Gelap sudah aktif secara default.')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
+<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🔔</span><span class="text-sm">Notifikasi</span></div><div onclick="toggleSwitch(this)" class="w-10 h-6 bg-primary rounded-full relative cursor-pointer transition-colors duration-300"><div class="toggle-knob w-4 h-4 bg-white rounded-full absolute top-1 right-1 transition-all duration-300"></div></div></div>
+<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div onclick="toggleSwitch(this)" class="w-10 h-6 bg-primary rounded-full relative cursor-pointer transition-colors duration-300"><div class="toggle-knob w-4 h-4 bg-white rounded-full absolute top-1 right-1 transition-all duration-300"></div></div></div>
 <div onclick="alert('Membuka pengaturan Privasi & Keamanan...')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🔒</span><span class="text-sm">Privasi & Keamanan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
 <div onclick="alert('Memuat Pusat Bantuan Wicara...')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>❓</span><span class="text-sm">Bantuan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
 <div onclick="alert('Wicara v2.0 - Digital Watchdog\nSDG 16: Peace, Justice and Strong Institutions\n\n© 2026 Hak Cipta Dilindungi.')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>ℹ️</span><span class="text-sm">Tentang Wicara</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
@@ -307,6 +307,30 @@ function handleFileUpload(event) {
     };
     reader.readAsDataURL(file);
   }
+}
+
+function toggleSwitch(element) {
+  const knob = element.querySelector('.toggle-knob');
+  if (element.classList.contains('bg-primary')) {
+    element.classList.remove('bg-primary');
+    element.classList.add('bg-gray-600');
+    knob.classList.remove('right-1');
+    knob.classList.add('left-1');
+  } else {
+    element.classList.remove('bg-gray-600');
+    element.classList.add('bg-primary');
+    knob.classList.remove('left-1');
+    knob.classList.add('right-1');
+  }
+}
+
+function selectFilter(element) {
+  const container = element.parentElement;
+  const buttons = container.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => {
+    btn.className = 'filter-btn cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full transition hover:bg-gray-800';
+  });
+  element.className = 'filter-btn cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium transition';
 }
 </script>
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAjYGiLw-t805e7Oj2opzrRjtfzzbMFDs&callback=initMap"></script>
