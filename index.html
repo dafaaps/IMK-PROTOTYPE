@@ -31,7 +31,7 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 <div class="px-5 pt-12 pb-6">
 <div class="flex justify-between items-center mb-8">
 <div><p class="text-gray-400 text-sm">Selamat datang di</p><h1 class="text-2xl font-bold text-primary">Wicara v2.0</h1></div>
-<div class="w-10 h-10 bg-surface rounded-full flex items-center justify-center">
+<div onclick="alert('Membuka daftar notifikasi...')" class="w-10 h-10 bg-surface rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-800 transition">
 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
 </div>
 </div>
@@ -100,11 +100,11 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 </button>
 <h3 class="font-semibold mb-3">Filter Wilayah</h3>
 <div class="flex gap-2 flex-wrap mb-4">
-<span class="bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium">Semua</span>
-<span class="bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full">Jawa</span>
-<span class="bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full">Sumatera</span>
-<span class="bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full">Kalimantan</span>
-<span class="bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full">Sulawesi</span>
+<span onclick="alert('Menampilkan semua laporan')" class="cursor-pointer bg-primary/20 text-primary text-xs px-3 py-1.5 rounded-full font-medium hover:bg-primary/30 transition">Semua</span>
+<span onclick="alert('Menampilkan laporan wilayah Jawa')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Jawa</span>
+<span onclick="alert('Menampilkan laporan wilayah Sumatera')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Sumatera</span>
+<span onclick="alert('Menampilkan laporan wilayah Kalimantan')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Kalimantan</span>
+<span onclick="alert('Menampilkan laporan wilayah Sulawesi')" class="cursor-pointer bg-surface text-gray-400 text-xs px-3 py-1.5 rounded-full hover:bg-gray-800 transition">Sulawesi</span>
 </div>
 <h3 class="font-semibold mb-3">Hotspot Area</h3>
 <div class="space-y-3">
@@ -136,7 +136,7 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 <img id="imagePreview" class="absolute inset-0 w-full h-full object-cover hidden" alt="Preview">
 </div></div>
 <div class="flex items-center gap-2"><input type="checkbox" class="accent-primary"><label class="text-xs text-gray-400">Laporkan secara anonim</label></div>
-<button class="w-full bg-primary text-white font-semibold py-3 rounded-xl">Kirim Laporan</button>
+<button onclick="alert('Terima kasih! Laporan Anda berhasil dikirim dan akan segera diinvestigasi oleh tim Wicara.')" class="w-full bg-primary text-white font-semibold py-3 rounded-xl hover:bg-pink-600 transition">Kirim Laporan</button>
 </div>
 </div>
 </div>
@@ -146,8 +146,8 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 <div class="px-5 pt-12 pb-6 fade-in">
 <h1 class="text-xl font-bold mb-1">Rights Navigator</h1>
 <p class="text-sm text-gray-400 mb-4">Ketahui hak Anda sebagai warga negara</p>
-<button class="w-full bg-red-500 text-white font-bold py-4 rounded-2xl mb-6 flex items-center justify-center gap-2 active:bg-red-600">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+<button onclick="alert('⚠️ PERINGATAN DARURAT DIKIRIM!\n\nSinyal SOS Darurat beserta lokasi GPS Anda telah dikirimkan ke otoritas keamanan dan tim bantuan hukum terdekat!')" class="w-full bg-red-500 text-white font-bold py-4 rounded-2xl mb-6 flex items-center justify-center gap-2 active:bg-red-600 shadow-lg shadow-red-500/30">
+<svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
 🆘 SOS DARURAT
 </button>
 <h3 class="font-semibold mb-3">Hak Dasar Warga</h3>
@@ -175,11 +175,11 @@ body{max-width:430px;margin:0 auto;overflow-x:hidden;}
 </div>
 <h3 class="font-semibold mb-3">Pengaturan</h3>
 <div class="space-y-2">
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🔔</span><span class="text-sm">Notifikasi</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>🔒</span><span class="text-sm">Privasi & Keamanan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>❓</span><span class="text-sm">Bantuan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
-<div class="bg-card rounded-xl p-4 flex justify-between items-center"><div class="flex items-center gap-3"><span>ℹ️</span><span class="text-sm">Tentang Wicara</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+<div onclick="alert('Pengaturan Notifikasi disimpan!')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🔔</span><span class="text-sm">Notifikasi</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
+<div onclick="alert('Mode Gelap sudah aktif secara default.')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🌙</span><span class="text-sm">Mode Gelap</span></div><div class="w-10 h-6 bg-primary rounded-full relative"><div class="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div></div></div>
+<div onclick="alert('Membuka pengaturan Privasi & Keamanan...')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>🔒</span><span class="text-sm">Privasi & Keamanan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+<div onclick="alert('Memuat Pusat Bantuan Wicara...')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>❓</span><span class="text-sm">Bantuan</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+<div onclick="alert('Wicara v2.0 - Digital Watchdog\nSDG 16: Peace, Justice and Strong Institutions\n\n© 2026 Hak Cipta Dilindungi.')" class="cursor-pointer bg-card rounded-xl p-4 flex justify-between items-center hover:bg-gray-800 transition"><div class="flex items-center gap-3"><span>ℹ️</span><span class="text-sm">Tentang Wicara</span></div><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
 </div>
 </div>
 </div>
