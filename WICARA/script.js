@@ -223,6 +223,8 @@ let volumePressCount = 0;
 let volumePressTimer;
 let sosCallTimer;
 let sosConnectedTimer;
+let reBlackoutTimer; // Timer to re-blackout screen after 4 seconds
+let sosCallActive = false; // Track if SOS call is active
 
 // Detect volume keys or 'v' key for testing
 document.addEventListener('keydown', (e) => {
@@ -242,7 +244,15 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+function activateBlackout() {
+  if (!sosCallActive) return; // Don't blackout if call has ended
+  const overlay = document.getElementById('dark-overlay');
+  overlay.style.display = 'block';
+  setTimeout(() => overlay.classList.replace('opacity-0', 'opacity-100'), 50);
+}
+
 function triggerSOSCall() {
+  sosCallActive = true;
   showScreen('sos-call');
   const bottomNav = document.getElementById('bottom-nav');
   if(bottomNav) bottomNav.style.display = 'none'; // hide bottom nav
@@ -251,7 +261,8 @@ function triggerSOSCall() {
   statusEl.textContent = 'Memanggil...';
   statusEl.classList.add('animate-pulse');
   
-  // Reset overlay
+  // Reset overlay & timers
+  clearTimeout(reBlackoutTimer);
   const overlay = document.getElementById('dark-overlay');
   overlay.style.display = 'none';
   overlay.classList.replace('opacity-100', 'opacity-0');
@@ -269,10 +280,9 @@ function triggerSOSCall() {
       const s = (seconds % 60).toString().padStart(2, '0');
       statusEl.textContent = `Tersambung ${m}:${s}`;
       
-      // After 2 seconds, dim screen
+      // After 2 seconds of connection, blackout screen for the first time
       if (seconds === 2) {
-        overlay.style.display = 'block';
-        setTimeout(() => overlay.classList.replace('opacity-0', 'opacity-100'), 50);
+        activateBlackout();
       }
     }, 1000);
     
@@ -280,13 +290,18 @@ function triggerSOSCall() {
 }
 
 function endSOSCall() {
+  sosCallActive = false;
   clearTimeout(sosCallTimer);
   clearInterval(sosConnectedTimer);
+  clearTimeout(reBlackoutTimer);
   
   // Remove dark overlay
   const overlay = document.getElementById('dark-overlay');
   overlay.classList.replace('opacity-100', 'opacity-0');
   setTimeout(() => { overlay.style.display = 'none'; }, 500); // wait for fade transition
+  
+  // Reset blackout click counter
+  blackoutClickCount = 0;
   
   // Go back to previous screen
   const bottomNav = document.getElementById('bottom-nav');
@@ -302,13 +317,19 @@ function handleBlackoutClick() {
   clearTimeout(blackoutClickTimer);
   
   if (blackoutClickCount >= 4) {
-    // Exit blackout mode
+    // Reveal screen temporarily
     const overlay = document.getElementById('dark-overlay');
     overlay.classList.replace('opacity-100', 'opacity-0');
     setTimeout(() => { 
       overlay.style.display = 'none'; 
     }, 500);
     blackoutClickCount = 0;
+    
+    // Schedule re-blackout after 4 seconds (only if call is still active)
+    clearTimeout(reBlackoutTimer);
+    reBlackoutTimer = setTimeout(() => {
+      activateBlackout();
+    }, 4000);
   } else {
     blackoutClickTimer = setTimeout(() => {
       blackoutClickCount = 0;

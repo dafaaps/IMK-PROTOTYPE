@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wicara Admin — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="login-overlay" class="login-overlay">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">W</div>
+      <h2>Wicara Admin</h2>
+      <p>Masuk ke Panel Administrasi</p>
+    </div>
+    <div id="login-error" class="login-error">
+      <span>⚠️</span><span id="login-error-text">Username atau password salah.</span>
+    </div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="Masukkan username..." autocomplete="off">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Masukkan password..." onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div class="login-hint">
+      <details>
+        <summary>💡 Lihat daftar akun demo</summary>
+        <div class="hint-grid" id="hint-grid"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Overlay -->
+<div id="mobile-overlay" class="mobile-overlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Wicara Admin</h1>
+    <span>Panel Administrasi v2.0</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-page="institutions" onclick="showPage('institutions')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      Profil Instansi
+      <span class="badge">9</span>
+    </div>
+    <div class="nav-item" data-page="reports" onclick="showPage('reports')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      Laporan Masuk
+      <span class="badge">10</span>
+    </div>
+    <div class="nav-item" data-page="settings" onclick="showPage('settings')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Pengaturan
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar" id="sidebar-avatar">SA</div>
+      <div>
+        <div class="admin-name" id="sidebar-name">Super Admin</div>
+        <div class="admin-role" id="sidebar-role">Administrator</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      Keluar
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <h2 id="topbar-title">Dashboard</h2>
+    </div>
+    <div class="topbar-right">
+      <span id="topbar-role" class="role-badge super">Super Admin</span>
+      <div class="topbar-btn" title="Notifikasi" style="position:relative">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <div style="position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red)"></div>
+      </div>
+      <div class="topbar-btn" title="Refresh">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0115.5-5.36L20 4M20 15a9 9 0 01-15.5 5.36L4 20"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: DASHBOARD ==================== -->
+  <div id="page-dashboard" class="page active">
+    <div class="content">
+      <!-- Access Notice (shown for non-super users) -->
+      <div id="dashboard-notice" class="access-notice" style="display:none">
+        <div class="notice-icon">🔒</div>
+        <div class="notice-text">Anda login sebagai <strong id="notice-inst-name"></strong>. Dashboard menampilkan data yang relevan dengan instansi Anda.</div>
+      </div>
+      <!-- Stats -->
+      <div id="dashboard-stats" class="stats-grid">
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:rgba(233,30,99,.15)">📊</div>
+          <div class="stat-value">28,279</div>
+          <div class="stat-label">Total Laporan</div>
+          <div class="stat-change" style="background:rgba(34,197,94,.1);color:var(--green)">↑ 12.5%</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:rgba(34,197,94,.15)">✅</div>
+          <div class="stat-value">22,845</div>
+          <div class="stat-label">Laporan Selesai</div>
+          <div class="stat-change" style="background:rgba(34,197,94,.1);color:var(--green)">↑ 8.3%</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:rgba(234,179,8,.15)">⏳</div>
+          <div class="stat-value">3,892</div>
+          <div class="stat-label">Sedang Diproses</div>
+          <div class="stat-change" style="background:rgba(239,68,68,.1);color:var(--red)">↑ 3.1%</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:rgba(59,130,246,.15)">🏛️</div>
+          <div class="stat-value">9</div>
+          <div class="stat-label">Instansi Terdaftar</div>
+          <div class="stat-change" style="background:rgba(59,130,246,.1);color:var(--blue)">Aktif</div>
+        </div>
+      </div>
+
+      <!-- Recent Reports -->
+      <div class="section-header">
+        <h3>Laporan Terbaru</h3>
+        <button class="btn-sm" onclick="showPage('reports')">Lihat Semua →</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:24px">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Judul</th><th>Instansi</th><th>Status</th><th>Tanggal</th></tr></thead>
+            <tbody id="dashboard-reports-tbody">
+              <!-- Dynamically rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Access Institutions -->
+      <div class="section-header">
+        <h3>Instansi Utama</h3>
+        <button class="btn-sm" onclick="showPage('institutions')">Lihat Semua →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        <div class="card" style="cursor:pointer;text-align:center;padding:18px" onclick="showPage('institutions')">
+          <div style="font-size:28px;margin-bottom:8px">⚖️</div>
+          <div style="font-size:13px;font-weight:700">KPK</div>
+          <div style="font-size:10px;color:var(--text-muted)">Anti-Korupsi</div>
+          <div style="font-size:18px;font-weight:800;color:var(--primary);margin-top:8px">2,847</div>
+          <div style="font-size:10px;color:var(--text-muted)">Laporan</div>
+        </div>
+        <div class="card" style="cursor:pointer;text-align:center;padding:18px" onclick="showPage('institutions')">
+          <div style="font-size:28px;margin-bottom:8px">🚨</div>
+          <div style="font-size:13px;font-weight:700">Saber Pungli</div>
+          <div style="font-size:10px;color:var(--text-muted)">Anti-Pungli</div>
+          <div style="font-size:18px;font-weight:800;color:var(--red);margin-top:8px">6,230</div>
+          <div style="font-size:10px;color:var(--text-muted)">Laporan</div>
+        </div>
+        <div class="card" style="cursor:pointer;text-align:center;padding:18px" onclick="showPage('institutions')">
+          <div style="font-size:28px;margin-bottom:8px">🏛️</div>
+          <div style="font-size:13px;font-weight:700">Ombudsman RI</div>
+          <div style="font-size:10px;color:var(--text-muted)">Pelayanan Publik</div>
+          <div style="font-size:18px;font-weight:800;color:var(--blue);margin-top:8px">3,421</div>
+          <div style="font-size:10px;color:var(--text-muted)">Laporan</div>
+        </div>
+        <div class="card" style="cursor:pointer;text-align:center;padding:18px" onclick="showPage('institutions')">
+          <div style="font-size:28px;margin-bottom:8px">✊</div>
+          <div style="font-size:13px;font-weight:700">Komnas HAM</div>
+          <div style="font-size:10px;color:var(--text-muted)">Hak Asasi Manusia</div>
+          <div style="font-size:18px;font-weight:800;color:var(--cyan);margin-top:8px">2,100</div>
+          <div style="font-size:10px;color:var(--text-muted)">Laporan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: INSTITUTIONS ==================== -->
+  <div id="page-institutions" class="page">
+    <div class="content">
+      <div class="section-header">
+        <h3>Daftar Instansi Penerima Laporan</h3>
+      </div>
+      <!-- Filters -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        <button class="inst-filter" onclick="filterInstitutions('all',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--primary);background:var(--primary);color:#fff;cursor:pointer;transition:all .2s">Semua</button>
+        <button class="inst-filter" onclick="filterInstitutions('Anti-Korupsi',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Anti-Korupsi</button>
+        <button class="inst-filter" onclick="filterInstitutions('Anti-Pungli',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Anti-Pungli</button>
+        <button class="inst-filter" onclick="filterInstitutions('Penegakan Hukum',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Penegakan Hukum</button>
+        <button class="inst-filter" onclick="filterInstitutions('Pengawasan Keuangan',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Pengawasan Keuangan</button>
+        <button class="inst-filter" onclick="filterInstitutions('Pelayanan Publik',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Pelayanan Publik</button>
+        <button class="inst-filter" onclick="filterInstitutions('Hak Asasi Manusia',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">HAM</button>
+        <button class="inst-filter" onclick="filterInstitutions('Pengawasan Internal',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">Pengawasan Internal</button>
+      </div>
+      <!-- Institution Cards Grid -->
+      <div id="institutions-grid" class="profile-grid"></div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: REPORTS ==================== -->
+  <div id="page-reports" class="page">
+    <div class="content">
+      <div class="section-header">
+        <h3>Semua Laporan Masuk</h3>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        <button class="report-filter" onclick="filterReports('all',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--primary);background:var(--primary);color:#fff;cursor:pointer;transition:all .2s">Semua</button>
+        <button class="report-filter" onclick="filterReports('urgent',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">🔴 Urgent</button>
+        <button class="report-filter" onclick="filterReports('process',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">🟡 Diproses</button>
+        <button class="report-filter" onclick="filterReports('new',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">🔵 Baru</button>
+        <button class="report-filter" onclick="filterReports('done',this)" style="font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s">🟢 Selesai</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Judul Laporan</th><th>Instansi</th><th>Status</th><th>Tanggal</th><th>Pelapor</th></tr></thead>
+            <tbody id="reports-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: SETTINGS ==================== -->
+  <div id="page-settings" class="page">
+    <div class="content">
+      <div class="section-header"><h3>Pengaturan Sistem</h3></div>
+      <div style="max-width:600px;display:flex;flex-direction:column;gap:16px">
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Informasi Admin</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Kelola akun administrator</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Nama</span><span id="settings-name" style="font-weight:600">Super Admin</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Email</span><span style="font-weight:600">admin@wicara.go.id</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Role</span><span id="settings-role" style="font-weight:600">Administrator</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Instansi</span><span id="settings-inst" style="font-weight:600">Semua Instansi</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Last Login</span><span style="font-weight:600">09 Jun 2026, 10:30</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Notifikasi</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Atur preferensi notifikasi</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px">Laporan Baru</span>
+              <div style="width:40px;height:22px;border-radius:11px;background:var(--primary);position:relative;cursor:pointer"><div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;right:3px"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px">Laporan Urgent</span>
+              <div style="width:40px;height:22px;border-radius:11px;background:var(--primary);position:relative;cursor:pointer"><div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;right:3px"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px">Update Sistem</span>
+              <div style="width:40px;height:22px;border-radius:11px;background:var(--surface);border:1px solid var(--border);position:relative;cursor:pointer"><div style="width:16px;height:16px;border-radius:50%;background:var(--text-muted);position:absolute;top:2px;left:3px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">Tentang</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Informasi aplikasi</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Versi</span><span style="font-weight:600">2.0.4 (Admin)</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Developer</span><span style="font-weight:600">Dafaaps Studio</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">Build</span><span style="font-weight:600">Build 492</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div id="detail-modal" class="modal-overlay">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
